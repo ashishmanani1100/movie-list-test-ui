@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import { useTranslation } from "react-i18next";
 import { useMutation } from "@apollo/client";
 import { useFormik } from "formik";
@@ -8,7 +7,6 @@ import * as yup from "yup";
 import { toast } from "react-toastify";
 import {
   Box,
-  Checkbox,
   CircularProgress,
   IconButton,
   InputAdornment,
@@ -18,37 +16,19 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
-import { SignIn } from "../../Graphql/mutations";
+import { SignUp } from "../../Graphql/mutations";
 
 import BaseTextField from "../../Common/BaseTextField";
 import BaseButton from "../../Common/BaseButton";
-import { COLOR_BLUE_LIGHT, COLOR_WHITE } from "../../Utils/Colors";
+import { COLOR_WHITE } from "../../Utils/Colors";
 
-import uncheckedCheckbox from "../../Assets/Images/unchecked-checkbox.png";
-
-const Signin = () => {
+const Signup = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [cookies, setCookie] = useCookies(["token"]);
-  const [signIn, { loading }] = useMutation(SignIn);
+  const [signUp, { loading }] = useMutation(SignUp);
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
 
   const isTabletScreen = useMediaQuery("(max-width:768px)");
-
-  // Check if the cookie is valid or not, and navigate if the user is already logged in
-  const handleCheckCoockieExpiration = useCallback(() => {
-    const currentTime = new Date().getTime();
-    const expirationTime = cookies.exp ? parseInt(cookies.exp) : null;
-
-    if (cookies.token || (expirationTime && currentTime < expirationTime)) {
-      navigate("/movie-list");
-    }
-  }, [navigate, cookies]);
-
-  useEffect(() => {
-    handleCheckCoockieExpiration();
-  }, [cookies, handleCheckCoockieExpiration]);
 
   const validationSchema = yup.object({
     email: yup
@@ -73,24 +53,18 @@ const Signin = () => {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       try {
-        const result = await signIn({
+        const result = await signUp({
           variables: { ...values },
         });
-        if (result?.data?.signIn) {
-          const token = result.data.signIn?.tokens?.accessToken?.token;
-          setCookie("token", token, { maxAge: 24 * 60 * 60 });
-          localStorage.setItem("token", token);
-          navigate("/movie-list");
+        if (result?.data?.signUp) {
+          toast.success(t("signupSuccessful"));
+          navigate("/");
         } else if (result?.errors?.length) {
           toast.error(result.errors[0]?.message);
         }
       } catch (error) {}
     },
   });
-
-  const handleSetRememberMe = () => {
-    setRememberMe(true);
-  };
 
   return (
     <Box
@@ -112,7 +86,7 @@ const Signin = () => {
         }}
       >
         <Typography variant={isTabletScreen ? "h4" : "h2"}>
-          {t("signIn")}
+          {t("signup")}
         </Typography>
 
         <BaseTextField
@@ -157,42 +131,18 @@ const Signin = () => {
           }}
         />
 
-        <Box sx={{ display: "flex", alignItems: "center", gap: "5px" }}>
-          {rememberMe ? (
-            <Checkbox
-              checked={rememberMe}
-              onChange={(e) => setRememberMe(e.target.checked)}
-              sx={{
-                padding: "0",
-                paddingRight: "5px",
-                "& .MuiSvgIcon-root": {
-                  fill: COLOR_BLUE_LIGHT,
-                },
-              }}
-            />
-          ) : (
-            <img
-              src={uncheckedCheckbox}
-              alt="Checkbox"
-              style={{ paddingRight: "10px", cursor: "pointer" }}
-              onClick={handleSetRememberMe}
-            />
-          )}
-          <Typography>{t("rememberMe")}</Typography>
-        </Box>
-
         <BaseButton
           endIcon={loading ? <CircularProgress size={18} /> : null}
           onClick={formik.handleSubmit}
           styleProps={{ width: "100%" }}
         >
-          {t("login")}
+          {t("signup")}
         </BaseButton>
 
         <Box sx={{ display: "flex", gap: "8px" }}>
-          <Typography>{t("dontHaveAnAccount")}</Typography>
-          <Link href={"/signup"} sx={{ color: COLOR_WHITE }}>
-            {t("signup")}
+          <Typography>{t("alreadyHaveAnAccount")}</Typography>
+          <Link href={"/"} sx={{ color: COLOR_WHITE }}>
+            {t("login")}
           </Link>
         </Box>
       </Box>
@@ -200,4 +150,4 @@ const Signin = () => {
   );
 };
 
-export default Signin;
+export default Signup;

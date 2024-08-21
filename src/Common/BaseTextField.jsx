@@ -1,31 +1,21 @@
 import { TextField } from "@mui/material";
-import { COLOR_BLUE_LIGHT, COLOR_RED, COLOR_WHITE } from "../utils/Colors";
 
-const BaseTextField = ({
-  value,
-  handleChange,
-  handleBlur,
-  error,
-  helperText,
-}) => {
+import { COLOR_BLUE_LIGHT, COLOR_RED, COLOR_WHITE } from "../Utils/Colors";
+
+// Common text field
+const BaseTextField = ({ type = "text", styleProp = {}, ...props }) => {
   return (
     <TextField
-      id="email"
-      name="email"
-      type="email"
+      type={type}
       fullWidth
-      label={"Email"}
-      placeholder={"Enter Email"}
       variant="outlined"
-      value={value}
-      onChange={handleChange}
-      onBlur={handleBlur}
-      error={error}
-      helperText={helperText}
       sx={{
         "& .MuiInputBase-root": {
           color: COLOR_WHITE,
           borderRadius: "10px",
+          "& fieldset": {
+            borderColor: COLOR_WHITE,
+          },
           "& input": {
             WebkitTapHighlightColor: COLOR_BLUE_LIGHT,
             padding: "16px",
@@ -38,11 +28,17 @@ const BaseTextField = ({
         },
         "& .MuiFormLabel-root.MuiInputLabel-root.Mui-focused": {
           color: COLOR_WHITE,
+          borderColor: COLOR_WHITE,
         },
         "& .MuiFormLabel-root.MuiInputLabel-root.Mui-error": {
           color: COLOR_RED,
         },
+        "& .MuiFormLabel-root": {
+          color: COLOR_WHITE,
+        },
+        ...styleProp,
       }}
+      {...props}
     />
   );
 };

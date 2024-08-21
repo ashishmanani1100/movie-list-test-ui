@@ -6,16 +6,26 @@ import {
 } from "react-router-dom";
 
 import Protected from "./Protected";
+import Auth from "./Auth";
 import Signin from "../Components/Signin";
+import Movies from "../Components/Movies";
+import PageNotFound from "../Components/404";
+import Movie from "../Components/Movies/Movie";
+import Signup from "../Components/Signup";
 
+// Defines all routes present in app
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/">
       <Route element={<Protected />}>
-        {/* <Route index element={<Home />} /> */}
+        <Route path="movie-list" element={<Movies />} />
+        <Route path="movie" element={<Movie />} />
       </Route>
-      <Route index element={<Signin />} />
-      <Route path="*" element={<h1>Page not found</h1>} />
+      <Route element={<Auth />}>
+        <Route index element={<Signin />} />
+        <Route path="signup" element={<Signup />} />
+        <Route path="*" element={<PageNotFound />} />
+      </Route>
     </Route>
   )
 );

@@ -1,9 +1,38 @@
-import { Button } from "@mui/material"
+import { Button } from "@mui/material";
 
-const BaseButton = ({ label }) => {
-  return <Button>
-    {label}
-  </Button>
-}
+import { COLOR_GREEN, COLOR_WHITE } from "../Utils/Colors";
 
-export default BaseButton
+// Common button
+const BaseButton = ({
+  variant = "filled",
+  children,
+  styleProps,
+  ...buttonProps
+}) => {
+  const dynamicStyle =
+    variant === "outlined"
+      ? { border: `1px solid ${COLOR_WHITE}` }
+      : { background: COLOR_GREEN, border: `1px solid ${COLOR_GREEN}` };
+
+  return (
+    <Button
+      sx={{
+        ...dynamicStyle,
+        color: COLOR_WHITE,
+        "&:hover": {
+          ...dynamicStyle,
+        },
+        ...styleProps,
+        "&.Mui-disabled": {
+          opacity: 0.5,
+          color: COLOR_WHITE,
+        },
+      }}
+      {...buttonProps}
+    >
+      {children}
+    </Button>
+  );
+};
+
+export default BaseButton;

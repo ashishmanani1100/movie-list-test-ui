@@ -6,11 +6,14 @@ import {
   ApolloProvider,
 } from "@apollo/client";
 import createUploadLink from 'apollo-upload-client/createUploadLink.mjs';
+import { ToastContainer } from "react-toastify";
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import "./i18n";
 
-import './index.css';
+import "react-toastify/dist/ReactToastify.css";
+import "./index.css";
 
 const link = createUploadLink({
   uri: process.env.REACT_APP_API_URL + "/graphql",
@@ -29,11 +32,12 @@ const client = new ApolloClient({
   },
 });
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
-        <App />
+      <App />
+      <ToastContainer autoClose={2000} limit={5} />
     </ApolloProvider>
   </React.StrictMode>
 );
