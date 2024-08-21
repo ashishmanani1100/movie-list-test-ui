@@ -85,3 +85,10 @@ export const EditMovie = gql`
     }
   }
 `;
+
+// GraphQL mutation to get delete a movie
+export const DeleteMovie = gql`
+  mutation deleteMovie($movieId: String!) {
+    deleteMovie(movieId: $movieId)
+  }
+`;

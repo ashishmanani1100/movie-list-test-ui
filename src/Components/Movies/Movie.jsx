@@ -15,11 +15,12 @@ import {
 } from "@mui/material";
 
 import { CreateMovie, EditMovie } from "../../Graphql/mutations";
+import { GetMovieById, GetMovies } from "../../Graphql/queries";
 
 import BaseTextField from "../../Common/BaseTextField";
 import BaseButton from "../../Common/BaseButton";
 import DragDropFileUpload from "../../Common/DragDropFileUpload";
-import { GetMovieById, GetMovies } from "../../Graphql/queries";
+import LanguageDropdown from "../../Common/LanguageDropdown";
 
 const InputFields = ({ formik }) => {
   const { t } = useTranslation();
@@ -93,23 +94,21 @@ const Movie = () => {
 
   const token = localStorage.getItem("token");
 
+  const context = {
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  };
+
   // Mutation hook for creating and editing movies
   const [createMovie, { loading }] = useMutation(CreateMovie, {
-    context: {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    },
-    refetchQueries: [{ query: GetMovies, variables: { page: 1 } }],
+    context,
+    refetchQueries: [{ query: GetMovies, variables: { page: 1 }, context }],
   });
 
   const [editMovie, { loading: editLoading }] = useMutation(EditMovie, {
-    context: {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    },
-    refetchQueries: [{ query: GetMovies, variables: { page: 1 } }],
+    context,
+    refetchQueries: [{ query: GetMovies, variables: { page: 1 }, context }],
   });
 
   // Lazy Query hook for get movie details by its it
@@ -220,9 +219,19 @@ const Movie = () => {
         zIndex: 1,
       }}
     >
-      <Typography variant={isTabletScreen ? "h5" : "h3"}>
-        {searchParams.has("id") ? t("edit") : t("createNewMovie")}
-      </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          gap: "10px",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Typography variant={isTabletScreen ? "h5" : "h3"}>
+          {searchParams.has("id") ? t("edit") : t("createNewMovie")}
+        </Typography>
+        <LanguageDropdown />
+      </Box>
       <Grid container spacing={4}>
         {isMobileScreen && (
           <Grid item xs={12}>

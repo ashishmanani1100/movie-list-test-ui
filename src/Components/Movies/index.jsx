@@ -19,6 +19,7 @@ import { GetMovies } from "../../Graphql/queries";
 import NoData from "./NoData";
 import MovieList from "./MovieList";
 import Pagination from "../../Common/Pagination";
+import LanguageDropdown from "../../Common/LanguageDropdown";
 import { COLOR_WHITE } from "../../Utils/Colors";
 
 const Movies = () => {
@@ -96,19 +97,21 @@ const Movies = () => {
                 <AddCircleOutlineIcon />
               </IconButton>
             </Box>
-
-            <Button
-              variant="text"
-              endIcon={<LogoutIcon />}
-              onClick={handleLogout}
-              sx={{
-                color: COLOR_WHITE,
-                textTransform: "capitalize",
-                fontWeight: 600,
-              }}
-            >
-              {t("logout")}
-            </Button>
+            <Box sx={{ display: "flex", alignItems: "center", gap: "5px" }}>
+              <LanguageDropdown />
+              <Button
+                variant="text"
+                endIcon={<LogoutIcon />}
+                onClick={handleLogout}
+                sx={{
+                  color: COLOR_WHITE,
+                  textTransform: "capitalize",
+                  fontWeight: 600,
+                }}
+              >
+                {t("logout")}
+              </Button>
+            </Box>
           </Box>
           <MovieList movies={data.getMovies.data} />
           <Pagination

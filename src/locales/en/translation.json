@@ -11,7 +11,7 @@
   "passwordMinLength": "Password should be of minimum 8 characters long!",
   "passwordMaxLength": "Password must be less than 128 characters!",
   "passwordRequired": "Password is required!",
-  "selectLanguage": "SelectLanguage",
+  "selectLanguage": "Select Language",
   "myMovies": "My movies",
   "logout": "Logout",
   "cancel": "Cancel",
@@ -34,7 +34,8 @@
   "pageNotFound": "404 Page not found",
   "dropAnImageHere": "Drop an image here",
   "signup": "Sign up",
-  "dontHaveAnAccount": "Vous n'avez pas de compte ?",
+  "dontHaveAnAccount": "Don't have an account?",
   "alreadyHaveAnAccount": "Already have an account?",
-  "signupSuccessful": "Signup was successful"
+  "signupSuccessful": "Signup was successful",
+  "movieDeleted": "Movie deleted successfully"
 }

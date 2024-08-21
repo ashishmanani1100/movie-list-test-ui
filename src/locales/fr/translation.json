@@ -36,5 +36,6 @@
   "signup": "S'inscrire",
   "dontHaveAnAccount": "Vous n'avez pas de compte ?",
   "alreadyHaveAnAccount": "Vous avez déjà un compte?",
-  "signupSuccessful": "L'inscription a réussi"
+  "signupSuccessful": "L'inscription a réussi",
+  "movieDeleted": "Film supprimé avec succès"
 }
