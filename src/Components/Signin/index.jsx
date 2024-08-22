@@ -81,10 +81,10 @@ const Signin = () => {
           setCookie("token", token, { maxAge: 24 * 60 * 60 });
           localStorage.setItem("token", token);
           navigate("/movie-list");
-        } else if (result?.errors?.length) {
-          toast.error(result.errors[0]?.message);
         }
-      } catch (error) {}
+      } catch (error) {
+        toast.error(error.message);
+      }
     },
   });
 

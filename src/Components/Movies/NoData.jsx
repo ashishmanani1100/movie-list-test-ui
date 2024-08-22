@@ -19,6 +19,7 @@ const NoData = () => {
         alignItems: "center",
         justifyContent: "center",
         flexDirection: "column",
+        height: "100%",
       }}
     >
       <Typography variant={isTabletScreen ? "h4" : "h2"}>

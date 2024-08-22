@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import {
   Box,
   CircularProgress,
+  FormHelperText,
   Grid,
   Stack,
   Typography,
@@ -21,9 +22,12 @@ import BaseTextField from "../../Common/BaseTextField";
 import BaseButton from "../../Common/BaseButton";
 import DragDropFileUpload from "../../Common/DragDropFileUpload";
 import LanguageDropdown from "../../Common/LanguageDropdown";
+import { COLOR_RED } from "../../Utils/Colors";
 
 const InputFields = ({ formik }) => {
   const { t } = useTranslation();
+
+  const isMobileScreen = useMediaQuery("(max-width:428px)");
 
   // Restrict input to numbers only for the publishing year field
   // e => 69
@@ -70,7 +74,7 @@ const InputFields = ({ formik }) => {
           inputProps: { min: 0, onKeyDown: onlyNumberKeys },
         }}
         styleProp={{
-          width: "60%",
+          width: isMobileScreen ? "100%" : "60%",
           "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button":
             {
               WebkitAppearance: "none",
@@ -134,6 +138,7 @@ const Movie = () => {
         new Date().getFullYear(),
         t("maxYearError", { year: new Date().getFullYear() })
       ),
+    image: yup.string().required(t("posterRequired")),
   });
 
   const formik = useFormik({
@@ -168,15 +173,17 @@ const Movie = () => {
           });
         }
 
+        console.log("result", result);
+
         if (result?.data?.createMovie || result?.data?.editMovie) {
           toast.success(
             result?.data?.createMovie ? t("movieCreated") : t("movieEdited")
           );
           navigate("/movie-list");
-        } else if (result?.errors?.length) {
-          toast.error(result.errors[0]?.message);
         }
-      } catch (error) {}
+      } catch (error) {
+        toast.error(error.message);
+      }
     },
   });
 
@@ -212,11 +219,11 @@ const Movie = () => {
         flexDirection: "column",
         gap: "50px",
         height: "100%",
-        minHeight: "100vh",
         padding: isTabletScreen ? "20px" : "50px",
-        paddingBottom: "150px",
         position: "relative",
         zIndex: 1,
+        overflowY: "auto",
+        boxSizing: "border-box",
       }}
     >
       <Box
@@ -240,15 +247,20 @@ const Movie = () => {
             </Stack>
           </Grid>
         )}
-        <Grid item xs={12} sm={5}>
+        <Grid item xs={12} md={6} lg={5}>
           <DragDropFileUpload
             id={searchParams.get("id")}
             name={formik.values.title}
             formik={formik}
             setImage={setImage}
           />
+          {formik.errors.image && (
+            <FormHelperText sx={{ color: COLOR_RED }}>
+              {formik.errors.image}
+            </FormHelperText>
+          )}
         </Grid>
-        <Grid item xs={12} sm={7} md={4}>
+        <Grid item xs={12} md={4}>
           <Stack gap={2}>
             {!isMobileScreen && <InputFields formik={formik} />}
 

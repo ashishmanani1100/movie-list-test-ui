@@ -37,5 +37,10 @@
   "dontHaveAnAccount": "Don't have an account?",
   "alreadyHaveAnAccount": "Already have an account?",
   "signupSuccessful": "Signup was successful",
-  "movieDeleted": "Movie deleted successfully"
+  "movieDeleted": "Movie deleted successfully",
+  "warning": "Warning",
+  "deleteMovie": "Are you sure you want to delete {{name}} movie?",
+  "no": "No",
+  "yes": "Yes",
+  "posterRequired": "Poster is required!"
 }

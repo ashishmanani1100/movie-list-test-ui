@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { useTranslation } from "react-i18next";
-import { useLazyQuery } from "@apollo/client";
+import { useApolloClient, useLazyQuery } from "@apollo/client";
 import {
   Box,
   Button,
@@ -31,6 +31,7 @@ const Movies = () => {
   const isTabletScreen = useMediaQuery("(max-width:768px)");
   const token = localStorage.getItem("token");
 
+  const client = useApolloClient();
   const [getMovies, { loading, data }] = useLazyQuery(GetMovies, {
     context: {
       headers: {
@@ -41,29 +42,45 @@ const Movies = () => {
 
   // Get movies for the first time and when page changes
   useEffect(() => {
-    getMovies({ variables: { page } });
-  }, [getMovies, page]);
+    if (token) {
+      getMovies({
+        variables: { page },
+      });
+    }
+  }, [getMovies, page, token]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("lang");
     removeCookie("token");
     navigate("/");
+    client.clearStore();
   };
 
   return (
     <Box
       sx={{
         height: "100%",
-        minHeight: "100vh",
         padding: isTabletScreen ? "50px 20px" : "50px",
         paddingBottom: "150px",
         position: "relative",
         zIndex: 1,
+        overflowY: "auto",
+        boxSizing: "border-box",
       }}
     >
       {loading ? (
         // Display a loading spinner while data is being fetched
-        <CircularProgress size={24} />
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+          }}
+        >
+          <CircularProgress size={24} />
+        </Box>
       ) : data?.getMovies?.data?.length ? (
         <Box
           sx={{

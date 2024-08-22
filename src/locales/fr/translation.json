@@ -37,5 +37,10 @@
   "dontHaveAnAccount": "Vous n'avez pas de compte ?",
   "alreadyHaveAnAccount": "Vous avez déjà un compte?",
   "signupSuccessful": "L'inscription a réussi",
-  "movieDeleted": "Film supprimé avec succès"
+  "movieDeleted": "Film supprimé avec succès",
+  "warning": "Avertissement",
+  "deleteMovie": "Êtes-vous sûr de vouloir supprimer le film {{name}} ?",
+  "no": "Non",
+  "yes": "Oui",
+  "posterRequired": "Une affiche est obligatoire !"
 }

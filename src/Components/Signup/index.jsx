@@ -59,10 +59,10 @@ const Signup = () => {
         if (result?.data?.signUp) {
           toast.success(t("signupSuccessful"));
           navigate("/");
-        } else if (result?.errors?.length) {
-          toast.error(result.errors[0]?.message);
         }
-      } catch (error) {}
+      } catch (error) {
+        toast.error(error.message);
+      }
     },
   });
 

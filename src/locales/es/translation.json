@@ -37,5 +37,10 @@
   "dontHaveAnAccount": "¿No tienes una cuenta?",
   "alreadyHaveAnAccount": "¿Ya tienes una cuenta?",
   "signupSuccessful": "El registro fue exitoso",
-  "movieDeleted": "Película eliminada exitosamente"
+  "movieDeleted": "Película eliminada exitosamente",
+  "warning": "Advertencia",
+  "deleteMovie": "¿Estás seguro de que deseas eliminar la película {{name}}?",
+  "no": "No",
+  "yes": "Sí",
+  "posterRequired": "¡Se requiere póster!"
 }

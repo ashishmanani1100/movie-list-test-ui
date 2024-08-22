@@ -23,7 +23,7 @@ function DragDropFileUpload({ id, name, setImage, formik }) {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isShowProgressBar, setIsShowProgressBar] = useState(false);
 
-  const isLaptopScreen = useMediaQuery("(min-width:1400px)");
+  const isLaptopScreen = useMediaQuery("(min-width:1440px)");
   const token = localStorage.getItem("token");
 
   const [editMovieImage, { loading: imageLoading }] = useLazyQuery(
@@ -159,7 +159,7 @@ function DragDropFileUpload({ id, name, setImage, formik }) {
               boxSizing: "border-box",
               ...(isLaptopScreen
                 ? { width: "473px", height: "504px" }
-                : { height: "372px" }),
+                : { width: "380px", height: "372px" }),
             }}
           >
             <input
@@ -217,7 +217,7 @@ function DragDropFileUpload({ id, name, setImage, formik }) {
                 position: "relative",
                 ...(isLaptopScreen
                   ? { width: "473px", height: "504px" }
-                  : { height: "372px" }),
+                  : { width: "380px", height: "372px" }),
               }}
             >
               <Box
