@@ -14,10 +14,14 @@ import {
 import DownloadIcon from "@mui/icons-material/Download";
 
 import { EditMovieImage } from "../Graphql/queries";
+
+import useActionContext from "../Context/useActionContext";
+
 import { COLOR_WHITE } from "../Utils/Colors";
 
 function DragDropFileUpload({ id, name, setImage, formik }) {
   const { t } = useTranslation();
+  const { handleShowError } = useActionContext();
   const [dragOver, setDragOver] = useState(false);
   const [loading, setLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -34,6 +38,7 @@ function DragDropFileUpload({ id, name, setImage, formik }) {
           authorization: `Bearer ${token}`,
         },
       },
+      onError: handleShowError,
     }
   );
 
@@ -98,14 +103,15 @@ function DragDropFileUpload({ id, name, setImage, formik }) {
         }.${file.name.split(".").pop()}`
       );
       let payload = {};
-      if (id && !formik?.values?.image) {
-        payload.key = key;
+
+      if (id) {
         payload.movieId = id;
-      } else if (id) {
-        payload.movieId = id;
-      } else {
+      }
+
+      if (!formik?.values?.image) {
         payload.key = key;
       }
+
       const result = await editMovieImage({ variables: { ...payload } });
 
       if (result?.data?.editMovieImage) {

@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import { useTranslation } from "react-i18next";
-import { useApolloClient, useLazyQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import {
   Box,
   Button,
@@ -16,6 +15,8 @@ import LogoutIcon from "@mui/icons-material/Logout";
 
 import { GetMovies } from "../../Graphql/queries";
 
+import useActionContext from "../../Context/useActionContext";
+
 import NoData from "./NoData";
 import MovieList from "./MovieList";
 import Pagination from "../../Common/Pagination";
@@ -25,19 +26,19 @@ import { COLOR_WHITE } from "../../Utils/Colors";
 const Movies = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [, , removeCookie] = useCookies(["token"]);
+  const { handleLogout, handleShowError } = useActionContext();
   const [page, setPage] = useState(1);
 
   const isTabletScreen = useMediaQuery("(max-width:768px)");
   const token = localStorage.getItem("token");
 
-  const client = useApolloClient();
   const [getMovies, { loading, data }] = useLazyQuery(GetMovies, {
     context: {
       headers: {
         authorization: `Bearer ${token}`,
       },
     },
+    onError: handleShowError,
   });
 
   // Get movies for the first time and when page changes
@@ -48,14 +49,6 @@ const Movies = () => {
       });
     }
   }, [getMovies, page, token]);
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("lang");
-    removeCookie("token");
-    navigate("/");
-    client.clearStore();
-  };
 
   return (
     <Box

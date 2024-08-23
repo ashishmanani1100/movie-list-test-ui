@@ -18,6 +18,8 @@ import {
 import { CreateMovie, EditMovie } from "../../Graphql/mutations";
 import { GetMovieById, GetMovies } from "../../Graphql/queries";
 
+import useActionContext from "../../Context/useActionContext";
+
 import BaseTextField from "../../Common/BaseTextField";
 import BaseButton from "../../Common/BaseButton";
 import DragDropFileUpload from "../../Common/DragDropFileUpload";
@@ -90,6 +92,7 @@ const Movie = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { handleShowError } = useActionContext();
   const [image, setImage] = useState("");
 
   // Media querys for responsive design
@@ -108,11 +111,13 @@ const Movie = () => {
   const [createMovie, { loading }] = useMutation(CreateMovie, {
     context,
     refetchQueries: [{ query: GetMovies, variables: { page: 1 }, context }],
+    onError: handleShowError,
   });
 
   const [editMovie, { loading: editLoading }] = useMutation(EditMovie, {
     context,
     refetchQueries: [{ query: GetMovies, variables: { page: 1 }, context }],
+    onError: handleShowError,
   });
 
   // Lazy Query hook for get movie details by its it
@@ -123,6 +128,7 @@ const Movie = () => {
       },
     },
     fetchPolicy: "no-cache",
+    onError: handleShowError,
   });
 
   const validationSchema = yup.object({

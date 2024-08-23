@@ -1,8 +1,7 @@
-import { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { Box, MenuItem, Select } from "@mui/material";
 
-import { LanguageContext } from "../Context/LanguageProvider";
+import useActionContext from "../Context/useActionContext";
 
 import { languages } from "../Utils/languages";
 import { COLOR_WHITE } from "../Utils/Colors";
@@ -10,8 +9,7 @@ import { COLOR_WHITE } from "../Utils/Colors";
 /* Language dropdown */
 const LanguageDropdown = () => {
   const { t } = useTranslation();
-  const { selectedLanguage, handleChangeLanguage } =
-    useContext(LanguageContext);
+  const { selectedLanguage, handleChangeLanguage } = useActionContext();
 
   return (
     <Select

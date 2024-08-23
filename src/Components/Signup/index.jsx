@@ -18,6 +18,8 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 import { SignUp } from "../../Graphql/mutations";
 
+import useActionContext from "../../Context/useActionContext";
+
 import BaseTextField from "../../Common/BaseTextField";
 import BaseButton from "../../Common/BaseButton";
 import { COLOR_WHITE } from "../../Utils/Colors";
@@ -25,10 +27,14 @@ import { COLOR_WHITE } from "../../Utils/Colors";
 const Signup = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [signUp, { loading }] = useMutation(SignUp);
+  const { handleShowError } = useActionContext();
   const [showPassword, setShowPassword] = useState(false);
 
   const isTabletScreen = useMediaQuery("(max-width:768px)");
+
+  const [signUp, { loading }] = useMutation(SignUp, {
+    onError: handleShowError,
+  });
 
   const validationSchema = yup.object({
     email: yup

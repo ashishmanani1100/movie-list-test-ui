@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { Box, useMediaQuery } from "@mui/material";
 
-import LanguageProvider from "../../Context/LanguageProvider";
+import ContextProvider from "../../Context/ContextProvider";
 
 import { COLOR_BLUE } from "../../Utils/Colors";
 
@@ -49,7 +49,7 @@ const Layout = ({ children }) => {
 
   return (
     // Main screen with image in layout
-    <LanguageProvider>
+    <ContextProvider>
       <Box
         sx={{
           height: "100%",
@@ -73,7 +73,7 @@ const Layout = ({ children }) => {
         {/* UI on main layout */}
         {children}
       </Box>
-    </LanguageProvider>
+    </ContextProvider>
   );
 };
 

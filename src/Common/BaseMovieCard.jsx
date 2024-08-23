@@ -23,6 +23,8 @@ import WarningIcon from "@mui/icons-material/Warning";
 import { DeleteMovie } from "../Graphql/mutations";
 import { GetMovies } from "../Graphql/queries";
 
+import useActionContext from "../Context/useActionContext";
+
 import {
   COLOR_DARK_BLUE,
   COLOR_LIGHT_BLUE,
@@ -33,6 +35,7 @@ import {
 const BaseMovieCard = ({ movieId, movieImage, movieTitle, movieYear }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { handleShowError } = useActionContext();
   const [isOpen, setIsOpen] = useState(false);
 
   const token = localStorage.getItem("token");
@@ -46,6 +49,7 @@ const BaseMovieCard = ({ movieId, movieImage, movieTitle, movieYear }) => {
   const [deleteMovie, { loading }] = useMutation(DeleteMovie, {
     context,
     refetchQueries: [{ query: GetMovies, variables: { page: 1 }, context }],
+    onError: handleShowError,
   });
 
   const handleDelete = async () => {

@@ -20,6 +20,8 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 import { SignIn } from "../../Graphql/mutations";
 
+import useActionContext from "../../Context/useActionContext";
+
 import BaseTextField from "../../Common/BaseTextField";
 import BaseButton from "../../Common/BaseButton";
 import { COLOR_BLUE_LIGHT, COLOR_WHITE } from "../../Utils/Colors";
@@ -30,11 +32,15 @@ const Signin = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [cookies, setCookie] = useCookies(["token"]);
-  const [signIn, { loading }] = useMutation(SignIn);
+  const { handleShowError } = useActionContext();
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
   const isTabletScreen = useMediaQuery("(max-width:768px)");
+
+  const [signIn, { loading }] = useMutation(SignIn, {
+    onError: handleShowError,
+  });
 
   // Check if the cookie is valid or not, and navigate if the user is already logged in
   const handleCheckCoockieExpiration = useCallback(() => {
